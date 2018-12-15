@@ -1,0 +1,39 @@
+    <table class="table">
+    <thead>
+    <tr>
+        <th>title</th>
+        <th>owner</th>
+        <th>created at</th>
+        <th>points</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for task in list.list_tasks.all %}
+        <tr
+
+                {% if task.status == 1 %}
+                    class="danger"
+                {% elif task.status == 2 %}
+                    class="info"
+                {% elif task.status == 3 %}
+                    class="warning"
+                {% elif task.status == 4 %}
+                    class="success"
+                {% endif %}
+        >
+            <td>
+                {% if request.user == task.user or request.user == task.list.user %}
+                <a href="{{ task.delete_url }}">
+                        <span class="glyphicon glyphicon-remove"></span>
+                </a>
+
+                {% endif %}
+                <a href="{{ task.get_absolute_url }}"> {{ task.title }}</a></td>
+            <td><a href="{% url "profile-detail" username=task.user%}">{{ task.user.get_full_name }}</a></td>
+            <td>{{ task.created_at }}</td>
+            <td>{{ task.points }}</td>
+        </tr>
+
+    {% endfor %}
+    </tbody>
+    </table>
